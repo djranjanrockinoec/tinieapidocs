@@ -1,0 +1,169 @@
+postgres://ewipvudn:l0otxqw0_nwNCqVb_pe2ResGrrgUDfi5@hansken.db.elephantsql.com/ewipvudn
+7157d1db-3ca1-4313-9c31-ff9807764102
+
+CREATE TABLE user_details (
+	phonenumber serial PRIMARY KEY,
+	username VARCHAR ( 50 ) UNIQUE NOT NULL
+);
+
+Thank you for your interest in Textlocal. It was a pleasure talking to you.
+Please download and install our free Textlocal WordPress plugin using this link: https://tx.gl/r/308i/  and start sending automated SMS alerts from your website effortlessly.
+Textlocal’s SMS API Gateway allows you to easily integrate our messaging services with your website or any other in-house/external application in PHP, ASP, .NET, Java or any other language.
+You can view our comprehensive API Documentation and coding here: https://api.textlocal.in/docs/
+Send Test Messages: Your test account has two test templates added that can be used to send a test message.
+For sending out a quick test SMS https://api.textlocal.in/send/?apiKey=<insert_apiKey>&sender=XXXXXX&numbers=91XXXXXXXXXX&message=Test_message 
+More about the parameters: 
+API Key: Create API key under Settings->API Keys in your account. 
+Sender: 
+o    To send a test message from your test accounts, replace sender with 600010. Message will be delivered with 600010
+o    If you have a promotional account replace the sender parameter with your DLT approved 6 digit header(sender name)
+o    If you have  Non-Promotional (Others) Account replace the sender parameter with your DLT approved 6 alpha header(sender name)
+Numbers: The destination mobile number to which the message will be sent. For promotional accounts, please use a non-DND number for testing.
+Message: The message content that you want to send. Please ensure that the message is URL encoded. 
+Other advanced parameters like schedule, test, custom, receipt URLs etc. can be passed along with Send SMS API. For details, refer our API documentation 
+
+Navigation >
+	1> tinie page> user enters phone number
+	2> request goes to login broker api which triggers OTP and checks if phone number is present in db
+		a> if present  and on Sucsssful OTP sent to customer and send username from user read api , phonennumber, name and OTP( expiry of 90 seconds) to be sent to UI. NB : tag of login to be sent
+			on succssful authentication setup up a session with 90 days expiry and land to main menu page
+		b> if not present and on Sucsssful OTP sent to customer send OTP and Register tag to UI
+			on successful authentication ask for username and send request to user details write API to write data to backend. on successful write reread data for user and send UI username phone number and set session for 90 days
+			
+API 1> 1.5 Dmije
+Name > login_broker /Login Broker <GET> ***token
+Functionality > To trigger OTP API and Read USER details API
+Flow >
+	1> Get Phone Number as request from UI
+	2> Send phone number to API2
+	3> receive response from API2
+	4> if response OK trigger API3
+	5> if response NOK send error to be displayed on ui
+	6> receive response from API3
+	7> if response OK , create new response with response from API2 and API3 and send to UI
+	8> if response NOK , send error to be displayed on ui.	
+	INPUT from UI
+	{
+		"phonenumber": "9999999999"
+	}
+	
+	Response to UI case 2 a
+	{
+		"phonenumber": "9999999999",
+		"OTP": "123456",
+		"OTPexpiry": "90",
+		"username": "Bhanu Prakash",
+		"sessionexpiry": "90",
+		"action": "Login"
+	}
+
+	Response to UI case 2 b
+	{
+		"phonenumber": "9999999999",
+		"OTP": "123456",
+		"OTPexpiry": "90",
+		"username": "",
+		"sessionexpiry": "90",
+		"action": "Register"
+	}
+
+	Response to UI on OTP fail
+	{
+		"phonenumber": "9999999999",
+		"action": "OTPNOK"
+	}
+	
+	Response to UI on READ fail
+	{
+		"phonenumber": "9999999999",
+		"action": "READNOK"
+	}
+
+
+
+API 2> 1 Pradeep
+Name > otp_manager /Generate OTP and SEND OTP <POST>
+Functionality > To generate random 6 digit OTP and send it to textlocal API. Same OTP has to be sent to UI.
+Flow >
+	1> Get phone number as request from API1
+	2> generate 6 digit Random OTP
+	3> read configurations from config file and send API request to external messege sender paltform(text local in our case)
+	4> on response OK from message sender platform ,send OTP and message status as response to API1
+	INPUT from API1
+	{
+		"phonenumber": "9999999999"
+	}
+	
+	Response to API1 on OK OTP
+	{
+		"phonenumber": "9999999999",
+		"OTP": "123456",
+		"messagestatus": "OK"
+	}
+	
+	Response to API1 on NOK OTP
+	{
+		"phonenumber": "9999999999",
+		"messagestatus": "NOK"
+	}
+
+API 3>1 pradeep
+NAME > get_user_detail /Read User Details <GET>
+Functionality > To read DB from user_details table and verify if user is available or not.
+Flow > 
+	1> Get phone number as request from API1
+	2> read configuration from config file (read user) and connect to db.
+	3> query for user details based on phone number
+	4> exit db session if needed
+	5> if user exists send phone number, username and "login"  as response to API1
+	6> if user does not exists send phone number and "register" as response to API1
+
+	INPUT from API1
+	{
+		"phonenumber": "9999999999"
+	}
+	
+	Response to API1 on OK read
+	{
+		"phonenumber": "9999999999",
+		"username": "Bhanu Prakash",
+		"action": "Login",
+		"readstatus": "OK"
+	}
+	
+	Response to API1 on NOK read
+	{
+		"phonenumber": "9999999999",
+		"action": "Register",
+		"readstatus": "NOK"
+	}
+
+API 4> 1 Dmijei
+Name > add_new_user /Write New User Details <POST>
+Functionality > Write new user phone number and name to DB
+Flow > 
+		1> Get Phone number and user name as request from UI
+		2> read configuration from config file (read user) and connect to db.
+		3> query for user details based on phone number
+		4> if user does not exists write phone number and user name to database
+		5> query for user details based on phone number
+		5> Send user details to UI
+	INPUT from UI
+	{
+		"phonenumber": "9999999999",
+		"username": "Bhanu Prakash"
+	}
+	
+	Response to UI on OK Write
+	{
+		"phonenumber": "9999999999",
+		"username": "Bhanu Prakash",
+		"usernamewritestatus": "OK"
+	}
+	
+	Response to API1 on NOK read
+	{
+		"phonenumber": "9999999999",
+		"username": "New User",
+		"usernamewritestatus": "OK"
+	}
