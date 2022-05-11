@@ -137,6 +137,13 @@ Flow >
 		"action": "Register",
 		"readstatus": "NOK"
 	}
+	
+	Response to API1 on failed read
+	{
+		"phonenumber": "9999999999",
+		"action": "",
+		"readstatus": "NOK"
+	}
 
 API 4> 1 Dmijei
 Name > add_new_user /Write New User Details <POST>
