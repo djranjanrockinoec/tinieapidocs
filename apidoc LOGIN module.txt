@@ -1,10 +1,53 @@
 postgres://ewipvudn:l0otxqw0_nwNCqVb_pe2ResGrrgUDfi5@hansken.db.elephantsql.com/ewipvudn
 7157d1db-3ca1-4313-9c31-ff9807764102
 
+DROP TABLE IF EXISTS user_details;
+DROP TABLE IF EXISTS login_records;
+DROP TABLE IF EXISTS category_details;
+DROP TABLE IF EXISTS subcategory_details;
+DROP TABLE IF EXISTS business_details;
+
 CREATE TABLE user_details (
-	phonenumber serial PRIMARY KEY,
-	username VARCHAR ( 50 ) UNIQUE NOT NULL
+	phone_number serial UNIQUE NOT NULL,
+	user_name VARCHAR ( 50 ) UNIQUE NOT NULL,
+	PRIMARY KEY(phone_number)
 );
+
+CREATE TABLE login_records (
+	phone_number serial UNIQUE NOT NULL,
+	last_login serial UNIQUE NOT NULL,
+	CONSTRAINT fk_phonenumber
+		FOREIGN KEY(phone_number)
+			REFERENCES user_details(phone_number)
+);
+
+CREATE TABLE category_details (
+	category_type VARCHAR ( 50 ) UNIQUE NOT NULL,
+	category_id serial UNIQUE NOT NULL,
+	PRIMARY KEY(category_id)
+);
+
+CREATE TABLE subcategory_details (
+	subcategory_type VARCHAR ( 50 ) UNIQUE NOT NULL,
+	subcategory_id serial UNIQUE NOT NULL,
+	category_id serial UNIQUE NOT NULL,
+	PRIMARY KEY(subcategory_id),
+	CONSTRAINT fk_categoryid
+		FOREIGN KEY(category_id)
+			REFERENCES category_details(category_id)
+);
+
+CREATE TABLE business_details (
+	business_type VARCHAR ( 50 ) UNIQUE NOT NULL,
+	business_id serial UNIQUE NOT NULL,
+	subcategory_id serial UNIQUE NOT NULL,
+	PRIMARY KEY(subcategory_id),
+	CONSTRAINT fk_subcategoryid
+		FOREIGN KEY(subcategory_id)
+			REFERENCES subcategory_details(subcategory_id)
+);
+
+
 
 Thank you for your interest in Textlocal. It was a pleasure talking to you.
 Please download and install our free Textlocal WordPress plugin using this link: https://tx.gl/r/308i/  and start sending automated SMS alerts from your website effortlessly.
@@ -25,10 +68,11 @@ Other advanced parameters like schedule, test, custom, receipt URLs etc. can be 
 Navigation >
 	1> tinie page> user enters phone number
 	2> request goes to login broker api which triggers OTP and checks if phone number is present in db
-		a> if present  and on Sucsssful OTP sent to customer and send username from user read api , phonennumber, name and OTP( expiry of 90 seconds) to be sent to UI. NB : tag of login to be sent
-			on succssful authentication setup up a session with 90 days expiry and land to main menu page
+		a> if present  and on Sucsssful OTP sent to customer and send username from user read api , phonennumber, name and OTP( expiry of 90 seconds) to be sent to UI. NB : tag of login to be senton succssful authentication setup up a session with 90 days expiry and land to main menu page
 		b> if not present and on Sucsssful OTP sent to customer send OTP and Register tag to UI
 			on successful authentication ask for username and send request to user details write API to write data to backend. on successful write reread data for user and send UI username phone number and set session for 90 days
+		c> on sucessful login entry should be made to login_records with phone number and login timestamp. On every login via OTP only this value should be updated. on every other login attempt UI cache login timestamp should be matched with this and if not matched session should be auto logout. On user logout , the data should be flushed from db.
+	3> on screen landing page, api should send categpry and related subcategory lists only.
 			
 API 1> 1.5 Dmije
 Name > login_broker /Login Broker <GET> ***token
@@ -81,7 +125,7 @@ Flow >
 
 
 
-API 2> 1 Pradeep
+API 2> 1 Dmiji
 Name > otp_manager /Generate OTP and SEND OTP <POST>
 Functionality > To generate random 6 digit OTP and send it to textlocal API. Same OTP has to be sent to UI.
 Flow >
@@ -107,7 +151,7 @@ Flow >
 		"messagestatus": "NOK"
 	}
 
-API 3>1 pradeep
+API 3>1 Dmiji
 NAME > get_user_detail /Read User Details <GET>
 Functionality > To read DB from user_details table and verify if user is available or not.
 Flow > 
@@ -174,3 +218,35 @@ Flow >
 		"username": "New User",
 		"usernamewritestatus": "OK"
 	}
+	
+API 5> 0.5 Dmijei
+Name > user_logout
+Functionality > on user click of logout on user click of logout
+Flow > 
+		1> Get Phone number and event name from UI
+		2> read configuration from config file (read user) and connect to db.
+		3> flush respective login record
+		4> Send user details to UI
+	INPUT from UI
+	{
+		"phonenumber": "9999999999",
+		"event": "logout"
+	}
+	
+	Response to UI on OK Write
+	{
+		"phonenumber": "9999999999",
+		"event": "loggedout"
+	}
+	
+	Response to API1 on NOK read
+	{
+		"phonenumber": "9999999999",
+		"event": "logoutfailed"
+	}
+
+API 5> 0.5 Dmijei
+Name > list_category_subcategory
+Functionality > sends list of catagories and subcatagories to ui
+Flow > 
+		1> get category and relevant subcategory details from db and send to ui
