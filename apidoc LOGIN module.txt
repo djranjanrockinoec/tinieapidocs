@@ -227,7 +227,7 @@ API 5> 0.5 Dimeji
 Name > user-logout
 Functionality > on user click of logout on user click of logout
 Flow > 
-		1> Get Phone number and event name from UI
+		1> Get Phone number from UI
 		2> read configuration from config file (read user) and connect to db.
 		3> flush respective login record
 		4> Send user details to UI
@@ -249,9 +249,22 @@ Flow >
 		"phonenumber": "9999999999",
 		"event": "logoutfailed"
 	}
+	
+	Response to UI on Invalid token
+	{
+		"phonenumber": "9999999999",
+		"event": "unauthorised"
+	}
 
 API 6> 0.5 Dimeji
 Name > list-category-subcategory
 Functionality > sends list of catagories and subcatagories to ui
 Flow > 
 		1> get category and relevant subcategory details from db and send to ui
+	Header: "token": <token gotten from login>
+	Body:
+	Response to UI on Invalid token
+	{
+		"phonenumber": "9999999999",
+		"event": "unauthorised"
+	}
