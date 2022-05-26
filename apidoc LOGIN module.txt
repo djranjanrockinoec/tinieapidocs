@@ -8,18 +8,20 @@ DROP TABLE IF EXISTS subcategory_details;
 DROP TABLE IF EXISTS business_details;
 
 CREATE TABLE user_details (
-	phone_number serial UNIQUE NOT NULL,
-	user_name VARCHAR ( 50 ) UNIQUE NOT NULL,
-	PRIMARY KEY(phone_number)
+    phone_number bigint NOT NULL,
+    user_name VARCHAR (50) NOT NULL,
+    CONSTRAINT user_details_pkey PRIMARY KEY (phone_number)
 );
 
 CREATE TABLE login_records (
-	phone_number serial UNIQUE NOT NULL,
-	last_login serial UNIQUE NOT NULL,
-	CONSTRAINT fk_phonenumber
-		FOREIGN KEY(phone_number)
-			REFERENCES user_details(phone_number)
-);
+    phone_number bigint NOT NULL,
+    last_login bigint NOT NULL,
+    CONSTRAINT login_records_phone_number_key UNIQUE (phone_number),
+    CONSTRAINT fk_phonenumber FOREIGN KEY (phone_number)
+        REFERENCES public.user_details (phone_number) MATCH SIMPLE
+        ON UPDATE NO ACTION
+        ON DELETE NO ACTION
+)
 
 CREATE TABLE category_details (
 	category_type VARCHAR ( 50 ) UNIQUE NOT NULL,
