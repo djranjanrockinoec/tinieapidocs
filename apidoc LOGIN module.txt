@@ -232,7 +232,8 @@ Flow >
 		3> flush respective login record
 		4> Send user details to UI
 	INPUT from UI
-	Header > "token": <token gotten from login>
+	**Header:** "token": <token gotten from login>
+	**Body:**
 	{
 		"phonenumber": "9999999999"
 	}
