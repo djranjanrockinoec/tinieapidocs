@@ -79,7 +79,7 @@ Navigation >
 	3> on screen landing page, api should send categpry and related subcategory lists only.
 			
 API 1> 1.5 Dimeji
-Name > login_broker /Login Broker <GET> ***token
+Name > login-broker /Login Broker <GET> ***token
 Functionality > To trigger OTP API and Read USER details API
 Flow >
 	1> Get Phone Number as request from UI
@@ -130,7 +130,7 @@ Flow >
 
 
 API 2> 1 Dimeji
-Name > otp_manager /Generate OTP and SEND OTP <POST>
+Name > otp-manager /Generate OTP and SEND OTP <POST>
 Functionality > To generate random 6 digit OTP and send it to textlocal API. Same OTP has to be sent to UI.
 Flow >
 	1> Get phone number as request from API1
@@ -156,7 +156,7 @@ Flow >
 	}
 
 API 3>1 Dimeji
-NAME > get_user_detail /Read User Details <GET>
+NAME > get-user-detail /Read User Details <GET>
 Functionality > To read DB from user_details table and verify if user is available or not.
 Flow > 
 	1> Get phone number as request from API1
@@ -194,7 +194,7 @@ Flow >
 	}
 
 API 4> 1 Dimeji
-Name > add_new_user /Write New User Details <POST>
+Name > add-new-user /Write New User Details <POST>
 Functionality > Write new user phone number and name to DB
 Flow > 
 		1> Get Phone number and user name as request from UI
@@ -224,7 +224,7 @@ Flow >
 	}
 	
 API 5> 0.5 Dimeji
-Name > user_logout
+Name > user-logout
 Functionality > on user click of logout on user click of logout
 Flow > 
 		1> Get Phone number and event name from UI
@@ -232,9 +232,9 @@ Flow >
 		3> flush respective login record
 		4> Send user details to UI
 	INPUT from UI
+	Header > "token": <token gotten from login>
 	{
-		"phonenumber": "9999999999",
-		"event": "logout"
+		"phonenumber": "9999999999"
 	}
 	
 	Response to UI on OK Write
@@ -250,7 +250,7 @@ Flow >
 	}
 
 API 6> 0.5 Dimeji
-Name > list_category_subcategory
+Name > list-category-subcategory
 Functionality > sends list of catagories and subcatagories to ui
 Flow > 
 		1> get category and relevant subcategory details from db and send to ui
