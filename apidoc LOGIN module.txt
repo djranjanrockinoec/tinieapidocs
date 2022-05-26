@@ -13,15 +13,17 @@ CREATE TABLE user_details (
     CONSTRAINT user_details_pkey PRIMARY KEY (phone_number)
 );
 
-CREATE TABLE login_records (
+CREATE TABLE login_records
+(
     phone_number bigint NOT NULL,
     last_login bigint NOT NULL,
+    CONSTRAINT login_records_pkey PRIMARY KEY (phone_number),
     CONSTRAINT login_records_phone_number_key UNIQUE (phone_number),
     CONSTRAINT fk_phonenumber FOREIGN KEY (phone_number)
         REFERENCES public.user_details (phone_number) MATCH SIMPLE
         ON UPDATE NO ACTION
         ON DELETE NO ACTION
-)
+);
 
 CREATE TABLE category_details (
 	category_type VARCHAR ( 50 ) UNIQUE NOT NULL,
@@ -76,7 +78,7 @@ Navigation >
 		c> on sucessful login entry should be made to login_records with phone number and login timestamp. On every login via OTP only this value should be updated. on every other login attempt UI cache login timestamp should be matched with this and if not matched session should be auto logout. On user logout , the data should be flushed from db.
 	3> on screen landing page, api should send categpry and related subcategory lists only.
 			
-API 1> 1.5 Dmije
+API 1> 1.5 Dimeji
 Name > login_broker /Login Broker <GET> ***token
 Functionality > To trigger OTP API and Read USER details API
 Flow >
@@ -127,7 +129,7 @@ Flow >
 
 
 
-API 2> 1 Dmiji
+API 2> 1 Dimeji
 Name > otp_manager /Generate OTP and SEND OTP <POST>
 Functionality > To generate random 6 digit OTP and send it to textlocal API. Same OTP has to be sent to UI.
 Flow >
@@ -153,7 +155,7 @@ Flow >
 		"messagestatus": "NOK"
 	}
 
-API 3>1 Dmiji
+API 3>1 Dimeji
 NAME > get_user_detail /Read User Details <GET>
 Functionality > To read DB from user_details table and verify if user is available or not.
 Flow > 
@@ -191,7 +193,7 @@ Flow >
 		"readstatus": "NOK"
 	}
 
-API 4> 1 Dmijei
+API 4> 1 Dimeji
 Name > add_new_user /Write New User Details <POST>
 Functionality > Write new user phone number and name to DB
 Flow > 
@@ -221,7 +223,7 @@ Flow >
 		"usernamewritestatus": "OK"
 	}
 	
-API 5> 0.5 Dmijei
+API 5> 0.5 Dimeji
 Name > user_logout
 Functionality > on user click of logout on user click of logout
 Flow > 
@@ -247,7 +249,7 @@ Flow >
 		"event": "logoutfailed"
 	}
 
-API 5> 0.5 Dmijei
+API 6> 0.5 Dimeji
 Name > list_category_subcategory
 Functionality > sends list of catagories and subcatagories to ui
 Flow > 
