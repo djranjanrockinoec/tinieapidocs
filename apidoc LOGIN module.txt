@@ -265,6 +265,8 @@ Flow >
 	Body:
 	Response to UI on Invalid token
 	{
-		"phonenumber": "9999999999",
-		"event": "unauthorised"
+		"status": "UNAUTHORIZED",
+		"code": 401,
+		"timestamp": 1234567890,
+		"message": "<reason for failure>"
 	}
