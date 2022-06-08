@@ -51,6 +51,17 @@ CREATE TABLE business_details (
 			REFERENCES subcategory_details(subcategory_id)
 );
 
+CREATE TABLE IF NOT EXISTS public.otp_records (
+    phone_number bigint NOT NULL,
+    expiry bigint NOT NULL,
+    hashed_otp character varying(255) COLLATE pg_catalog."default" NOT NULL,
+    CONSTRAINT otp_records_pkey PRIMARY KEY (phone_number),
+    CONSTRAINT fkmkv8tim3aejgf7vhv360whhqt FOREIGN KEY (phone_number)
+        REFERENCES public.user_details (phone_number) MATCH SIMPLE
+        ON UPDATE NO ACTION
+        ON DELETE NO ACTION
+);
+
 
 
 Thank you for your interest in Textlocal. It was a pleasure talking to you.
@@ -101,7 +112,6 @@ Flow >
 		"OTP": "123456",
 		"OTPexpiry": "90",
 		"username": "Bhanu Prakash",
-		"sessionexpiry": "90",
 		"action": "Login"
 	}
 
@@ -111,7 +121,6 @@ Flow >
 		"OTP": "123456",
 		"OTPexpiry": "90",
 		"username": "",
-		"sessionexpiry": "90",
 		"action": "Register"
 	}
 
@@ -291,4 +300,32 @@ Flow >
 		"code": 401,
 		"timestamp": 1234567890,
 		"message": "<reason for failure>"
+	}
+	
+API 7> 0.5 Dimeji
+Name > get-token <GET>
+Functionality > To verify received otp and if valid, return the authentication token 
+Flow >
+	1> Get Phone Number and otp as request from UI
+	2> Verify otp validity
+	3> if invalid, send error to be displayed on UI
+	4> if valid, create and send token to UI
+	INPUT from UI
+	{
+		"phonenumber": "9999999999",
+		"otp": "123456"
+	}
+	
+	Response to UI on invalid otp
+	{
+   		"message": "Invalid OTP",
+    		"phonenumber": 9999999999
+	}
+
+	Response to UI on valid otp
+	{
+    		"token": "token",
+		"username": "John Doe",
+    		"sessionexpiry": 90,
+    		"phonenumber": 9999999999
 	}
