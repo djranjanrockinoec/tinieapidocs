@@ -91,7 +91,8 @@ Navigation >
 	3> on screen landing page, api should send categpry and related subcategory lists only.
 			
 API 1> 1.5 Dimeji
-Name > login-broker /Login Broker <GET> ***token
+Name > login-broker /Login Broker <GET>
+Url > https://tiniev0loginbroker.azurewebsites.net/api/v1/login-broker?phonenumber=<PHONE_NUMBER>
 Functionality > To trigger OTP API and Read USER details API
 Flow >
 	1> Get Phone Number as request from UI
@@ -141,6 +142,7 @@ Flow >
 
 API 2> 1 Dimeji
 Name > otp-manager /Generate OTP and SEND OTP <POST>
+Url > https://tiniev0otpgen.azurewebsites.net/api/v1/otp-manager
 Functionality > To generate random 6 digit OTP and send it to textlocal API. Same OTP has to be sent to UI.
 Flow >
 	1> Get phone number as request from API1
@@ -167,6 +169,7 @@ Flow >
 
 API 3>1 Dimeji
 NAME > get-user-detail /Read User Details <GET>
+Url > https://tiniev0getuser.azurewebsites.net/api/v1/get-user-detail?phonenumber=<phone number>
 Functionality > To read DB from user_details table and verify if user is available or not.
 Flow > 
 	1> Get phone number as request from API1
@@ -205,6 +208,7 @@ Flow >
 
 API 4> 1 Dimeji
 Name > add-new-user /Write New User Details <POST>
+Url > https://tiniev0updateuser.azurewebsites.net/api/v1/add-new-user
 Functionality > Write new user phone number and name to DB
 Flow > 
 		1> Get Phone number and user name as request from UI
@@ -305,6 +309,7 @@ Flow >
 	
 API 7> 0.5 Dimeji
 Name > get-token <GET>
+Url > https://tiniev0loginbroker.azurewebsites.net/api/v1/get-token?phonenumber=<PHONE_NUMBER>&otp=<OTP>
 Functionality > To verify received otp and if valid, return the authentication token 
 Flow >
 	1> Get Phone Number and otp as request from UI
@@ -329,4 +334,30 @@ Flow >
 		"username": "John Doe",
     		"sessionexpiry": 90,
     		"phonenumber": 9999999999
+	}
+	
+API 8> Dimeji
+Name > verify-token <POST>
+Url > https://tiniev0loginbroker.azurewebsites.net/api/v1/verify-token
+Functionality > To verify token is still valid
+Flow >
+	1> Get phone number and token as request from UI
+	2> verify token validity
+	3> return response depending on validity
+	INPUT from UI
+	{
+		"phonenumber": 9999999999,
+		"token": <token>
+	}
+	
+	Response to UI on invalid token
+	{
+		"action": "TOKENNOK",
+		"phonenumber": 9999999999
+	}
+	
+	Response to UI on valid token
+	{
+		"action": "TOKENOK",
+		"phonenumber": 9999999999
 	}
