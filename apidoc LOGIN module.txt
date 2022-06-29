@@ -238,7 +238,8 @@ Flow >
 	}
 	
 API 5> 0.5 Dimeji
-Name > user-logout
+Name > user-logout <POST>
+Url > https://tiniev0logout.azurewebsites.net/api/v1/user-logout
 Functionality > on user click of logout on user click of logout
 Flow > 
 		1> Get Phone number from UI
@@ -271,12 +272,14 @@ Flow >
 	}
 
 API 6> 0.5 Dimeji
-Name > list-category-subcategory
+Name > list-category-subcategory <GET>
+Url > https://tiniev0getcatsubcat.azurewebsites.net/api/v1/list-category-subcategory
 Functionality > sends list of catagories and subcatagories to ui
 Flow > 
 		1> get category and relevant subcategory details from db and send to ui
 	Header: "token": <token gotten from login>
 	Body:
+	
 	Response to UI on OK read
 	[
 	    {
