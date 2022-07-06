@@ -364,3 +364,49 @@ Flow >
 		"action": "TOKENOK",
 		"phonenumber": 9999999999
 	}
+
+Katarzyna.gajda@dxc.com
+
+
+API 9> Dimeji ( 8 hours)
+Name > Get near services <POST>
+Url > 
+Functionality > To retrieve nearest servies from service listings based of co ordinates -Angular coordinate system
+Flow >
+	1> Get cordinates from UI in form of longitiudes and latitudes
+	2> verify token validity
+	3> return services within a range of 5 kms sorted from nearest to farthest
+	INPUT from UI
+	{
+		"phonenumber": 9999999999,
+		"userlatitude": 21.306923,
+		"userlatitude": 21.306943
+	}
+	
+	Response to UI on invalid token
+[
+	    {
+		"id": 1,
+		"name": "Personal Care",
+		"subCategories": [
+		    {
+			"id": 4,
+			"name": "Salons"
+		    },
+		    {
+			"id": 5,
+			"name": "Beauty Clinics"
+		    },
+		    {
+			"id": 3,
+			"name": "Spas"
+		    }
+		]
+	    }
+	]
+	
+	Response to UI on valid token
+	{
+		"action": "TOKENOK",
+		"phonenumber": 9999999999
+	}
