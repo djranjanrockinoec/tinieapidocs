@@ -46,8 +46,8 @@ CREATE TABLE business_details (
 	business_type VARCHAR ( 50 ) UNIQUE NOT NULL,
 	business_id serial UNIQUE NOT NULL,
 	subcategory_id serial NOT NULL,
-	latitude real,
-	longitude real,
+	latitude double precision,
+	longitude double precision,
 	PRIMARY KEY(business_id),
 	CONSTRAINT fk_subcategoryid
 		FOREIGN KEY(subcategory_id)
