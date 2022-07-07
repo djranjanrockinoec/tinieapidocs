@@ -1,5 +1,4 @@
-postgres://ewipvudn:l0otxqw0_nwNCqVb_pe2ResGrrgUDfi5@hansken.db.elephantsql.com/ewipvudn
-7157d1db-3ca1-4313-9c31-ff9807764102
+TEST DB: postgres://ewipvudn:l0otxqw0_nwNCqVb_pe2ResGrrgUDfi5@hansken.db.elephantsql.com/ewipvudn7157d1db-3ca1-4313-9c31-ff9807764102
 
 DROP TABLE IF EXISTS user_details;
 DROP TABLE IF EXISTS login_records;
