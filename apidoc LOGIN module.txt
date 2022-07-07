@@ -376,6 +376,8 @@ Flow >
 	1> Get cordinates from UI in form of longitiudes and latitudes
 	2> verify token validity
 	3> return services within a range of 5 kms sorted from nearest to farthest
+	
+	Header: "token": <token gotten from login>
 	INPUT from UI
 	{
 		"phonenumber": 9999999999,
@@ -384,7 +386,7 @@ Flow >
 	}
 	
 	Response to UI on invalid token
-[
+	[
 	    {
 		"id": 1,
 		"name": "Personal Care",
