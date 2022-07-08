@@ -378,38 +378,44 @@ Flow >
 	2> verify token validity
 	3> return services within a range of 5 kms sorted from nearest to farthest
 	
-	Header: "token": <token gotten from login>
+	Header: "token": <token gotten from verify otp>
 	INPUT from UI
 	{
-		"phonenumber": 9999999999,
-		"userlatitude": 21.306923,
-		"userlatitude": 21.306943
+		"page": <page number(>=1), defaults to 1 if not given>,
+		"size": <number of services in page, defaults to 20 if not given>,
+		"subCategoryId": 1,
+		"latitude": 21.306923,
+		"longitude": 21.306943
 	}
 	
-	Response to UI on invalid token
+	Response to UI on valid token
 	[
 	    {
 		"id": 1,
-		"name": "Personal Care",
-		"subCategories": [
-		    {
-			"id": 4,
-			"name": "Salons"
-		    },
-		    {
-			"id": 5,
-			"name": "Beauty Clinics"
-		    },
-		    {
-			"id": 3,
-			"name": "Spas"
-		    }
-		]
+		"name": "Exotic Hair Salon",
+		"latitude": 51.621304,
+		"longitude": -3.939071,
+		"subCategory": {
+		    "id": 1,
+		    "name": "Salons"
+		}
+	    },
+	    {
+		"id": 2,
+		"name": "Regular Nail Salon",
+		"latitude": 51.618088,
+		"longitude": -3.982663,
+		"subCategory": {
+		    "id": 1,
+		    "name": "Salons"
+		}
 	    }
 	]
 	
-	Response to UI on valid token
+	Response to UI on invalid token
 	{
-		"action": "TOKENOK",
-		"phonenumber": 9999999999
+		"status": "UNAUTHORIZED",
+		"code": 401,
+		"timestamp": 1234567890,
+		"message": "<reason for failure>"
 	}
