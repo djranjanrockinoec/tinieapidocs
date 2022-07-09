@@ -371,7 +371,7 @@ Katarzyna.gajda@dxc.com
 
 API 9> Dimeji ( 8 hours)
 Name > Get near services <POST>
-Url > 
+Url > https://tiniev0customerlocation.azurewebsites.net/api/v1/get-nearby-services
 Functionality > To retrieve nearest servies from service listings based of co ordinates -Angular coordinate system
 Flow >
 	1> Get cordinates from UI in form of longitiudes and latitudes
@@ -379,7 +379,7 @@ Flow >
 	3> return services within a range of 5 kms sorted from nearest to farthest
 	
 	Header: "token": <token gotten from verify otp>
-	INPUT from UI
+	QUERY PARAMETERS from UI
 	{
 		"page": <page number(>=1), defaults to 1 if not given>,
 		"size": <number of services in page, defaults to 20 if not given>,
